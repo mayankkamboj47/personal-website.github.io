@@ -1,0 +1,19 @@
+.contact-me{
+    font-family:'Roboto slab',serif;
+    padding:3em;
+}
+.contact-me h2{
+    font-size:2em;
+    text-align: center;
+}
+.contact-me .contact-links{
+    padding:2em 0em;
+    text-align:center;
+}
+.contact{
+    text-decoration: none;
+    color:gray;
+    display:inline-block;
+    padding:0.5em 1em;
+}
+.contact.github::after{}
