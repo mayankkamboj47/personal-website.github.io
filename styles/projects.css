@@ -35,3 +35,15 @@
       max-width:900px;
     }
   }
+  .airbnb{
+    background-image:url('../images/airbnb.png');
+  }
+  .calculator{
+    background-image:url('../images/calculator.png');
+  }
+  .pomodoro{
+    background-image:url('../images/pomodoro.png');
+  }
+  .twitter{
+    background-image:url('../images/twitter.png');
+  }
