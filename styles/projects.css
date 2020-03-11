@@ -17,6 +17,7 @@
     transform: translate(-50%, -50%);
     padding:0.5em 1em;
     border:1px solid white;
+    text-shadow:2px 2px gray;
   }
   .project:hover span{
     display:inline-block;
