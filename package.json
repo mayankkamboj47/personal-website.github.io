@@ -1,0 +1,22 @@
+{
+  "name": "mayankkamboj47.github.io",
+  "version": "1.0.0",
+  "description": "Code for mayankkamboj.github.io",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mayankkamboj47/mayankkamboj47.github.io.git"
+  },
+  "author": "Mayank Kamboj",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mayankkamboj47/mayankkamboj47.github.io/issues"
+  },
+  "homepage": "https://github.com/mayankkamboj47/mayankkamboj47.github.io#readme",
+  "devDependencies": {
+    "lite-server": "^2.5.4"
+  }
+}
