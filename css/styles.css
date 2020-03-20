@@ -9,3 +9,6 @@ body{
 .footer{
     background:whitesmoke;
 }
+.sidebar{
+    border-left:1px solid whitesmoke;
+}
