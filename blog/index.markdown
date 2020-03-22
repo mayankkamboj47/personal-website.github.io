@@ -7,6 +7,7 @@ layout: home
 This is the blog part of my website
 
 <ul>
+<li>List item 1</li>
   {% for post in site.posts %}
     <li>
       <a href="{{ post.url }}">{{ post.title }}</a>
