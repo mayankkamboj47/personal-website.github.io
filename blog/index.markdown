@@ -4,7 +4,7 @@
 
 layout: home
 ---
-This is the blog part of my website
+Posts
 
 <ul>
   {% for post in site.posts %}
