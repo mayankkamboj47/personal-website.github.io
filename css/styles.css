@@ -1,17 +1,16 @@
 body{
-    min-height:100vh!important;
-    display:flex;
-    flex-direction: column;
-}
-.column {
-    min-height:400px;
+    min-height:100vh;
+    background-color:#aaa;
 }
 .footer{
-    background:whitesmoke;
-}
-.sidebar{
-    border-left:1px solid whitesmoke;
+    background:#333;
+    color:white;
 }
 .push-down{
     margin-top:20px;
+}
+.card{
+    background:rgb(64,64,64);
+    color:#eee;
+    border:initial;
 }
