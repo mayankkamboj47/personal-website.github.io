@@ -52,8 +52,28 @@
             }
             .score-div{
                 float:right;
+                clear:right;
                 padding:1em;
                 transform:all linear 0.2s;
+            }
+            .fadetext{
+                float:right;
+                font-size:2em;
+                padding:0.5em;
+                animation: fadeout 1.5s linear 1 forwards;
+            }
+            .face{
+                float:right;
+                font-size:2em;
+            }
+            @keyframes fadeout{
+                0%{
+                    opacity:1;
+                }
+                100%{
+                    opacity:0;
+                    visibility:collapse;
+                }
             }
         </style>
     </head>

@@ -37,16 +37,19 @@ class Level{
          let mask = this.mask.slice();
          let val = this.grid.get(x,y);
          let score = this.score, status;
+         let bombed = false;
          if(!mask[index]){
             mask[index] = 1;
             if(val){
                 score += val;
                 if(val==1){
                     let b = bomb(this.grid,mask,x,y);
+                    bombed = true;
                     mask = b.mask;
                     score = score + b.count;
                 }
                 status = this.won(this.grid,mask)?"won":"playing"; /**add code for checking winning here */
+                if(bombed && status=='playing') status = 'bombed';
             }
             else{
                 score = this.score;
@@ -104,6 +107,12 @@ function unmine(grid,mask){
     }
     return newmask;
 }
+let faces = {
+    'playing':String.fromCodePoint(0x1F642),
+    'lost':String.fromCodePoint(0x1F635),
+    'bombed':String.fromCodePoint(0x1F642),
+    'amazed':String.fromCodePoint(0x1F62E)
+};
 function unveil(x,y,level,docNode){
     return function(){
         let newLevel = level.unmask(x,y);
@@ -111,8 +120,18 @@ function unveil(x,y,level,docNode){
             docNode.removeChild(docNode.firstChild);
         }
         drawLevel(newLevel,docNode);
-        console.log(newLevel.score);
+        if(newLevel.status!=='lost'){
+            let face = docNode.querySelector('.face');
+            face.innerHTML = faces['amazed'];
+            setInterval(()=>{
+                face.innerHTML = faces[newLevel.status] || faces['playing'];
+            },200);
+        }
     };
+}
+
+function fadeText(text){
+    return elt('div',{class:'fadetext'},elt('text',text));
 }
 let classNames = {
     1:'one',
@@ -125,8 +144,10 @@ function drawLevel(level,docNode){
     let mask = level.mask;
     let grid = level.grid;
     let game = elt('div',{class:'game'});
+    let face = elt('div',{class:'face'},elt('text',faces[level.status]||faces['playing']));
     let score = elt('div',{class:'score-div'},elt('text','Score : '),elt('span',{class:'score'},elt('text',level.score)));
     docNode.appendChild(elt('div',{class:'game-container'},score,game));
+    docNode.prepend(face);
     let boxsize = 100/grid.size;
     for(let y=0;y<grid.size;y++){
         for(let x=0;x<grid.size;x++){
