@@ -1,6 +1,7 @@
 class Grid{
     constructor(n){
         this.elements = [];
+        this.total = 0;
         for(let i=0;i<n*n;i++){
             let rand = Math.random();
             if(rand<0.1) this.elements.push(null);
@@ -8,6 +9,7 @@ class Grid{
             else if(rand<0.8) this.elements.push(2);
             else if(rand<0.9) this.elements.push(4);
             else this.elements.push(5);
+            this.total += (this.elements[i]?this.elements[i]:0);
         }
         this.size = n;
     }
@@ -119,6 +121,11 @@ function unveil(x,y,level,docNode){
         while(docNode.firstChild){
             docNode.removeChild(docNode.firstChild);
         }
+        if(localStorage.getItem('highscore')){
+            let highscore = localStorage.getItem('highscore');
+            if(highscore<newLevel.score) localStorage.setItem('highscore',newLevel.score);
+        }
+        else localStorage.setItem('highscore',newLevel.score);
         drawLevel(newLevel,docNode);
         if(newLevel.status!=='lost'){
             let face = docNode.querySelector('.face');
@@ -128,10 +135,6 @@ function unveil(x,y,level,docNode){
             },200);
         }
     };
-}
-
-function fadeText(text){
-    return elt('div',{class:'fadetext'},elt('text',text));
 }
 let classNames = {
     1:'one',
@@ -145,9 +148,17 @@ function drawLevel(level,docNode){
     let grid = level.grid;
     let game = elt('div',{class:'game'});
     let face = elt('div',{class:'face'},elt('text',faces[level.status]||faces['playing']));
-    let score = elt('div',{class:'score-div'},elt('text','Score : '),elt('span',{class:'score'},elt('text',level.score)));
-    docNode.appendChild(elt('div',{class:'game-container'},score,game));
-    docNode.prepend(face);
+    let highscore = elt('div',{class:'highscore'},elt('text','Highscore : '+ (localStorage.getItem('highscore') || level.score)));
+    let score = elt('div',{class:'score-div'},
+       elt('text','Score : '),
+       elt('span',{class:'score'},
+         elt('text',level.score),
+         elt('text',' - '),
+         elt('span',{class:'total-score'},elt('text',grid.total))));
+    let reset = elt('input',{class:'reset',value:'New Game',type:'button'});
+    let controls = elt('div',{class:'controls'},face,highscore,score,reset);
+    reset.addEventListener('click',()=>newgame(docNode));
+    docNode.appendChild(elt('div',{class:'game-container'},controls,game));
     let boxsize = 100/grid.size;
     for(let y=0;y<grid.size;y++){
         for(let x=0;x<grid.size;x++){
@@ -165,6 +176,11 @@ function drawLevel(level,docNode){
         }
     }
 }
+function newgame(docNode){
+    while(docNode.firstChild) docNode.removeChild(docNode.firstChild);
+    let level = Level.start(new Grid(10));
+    drawLevel(level,docNode);
+}
 function elt(name,attrs,...elements){
     if(name=='text') return document.createTextNode(attrs);
     let main = document.createElement(name);
@@ -176,5 +192,4 @@ function elt(name,attrs,...elements){
     }
     return main;
 }
-let level = Level.start(new Grid(10));
-drawLevel(level,document.body);
+newgame(document.body);
