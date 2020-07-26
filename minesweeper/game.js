@@ -144,7 +144,7 @@ function zeroFrenzy(x,y,grid,mask){
     let recdirs = [];
     for(let dir of dirs){
         let [xdir,ydir] = [dir[0],dir[1]];
-        if(mask[xdir+ydir*grid.size]==1 || xdir<0 || ydir<0) continue;
+        if(mask[xdir+ydir*grid.size]==1 || xdir<0 || ydir<0 || typeof grid.get(xdir,ydir)!=='number') continue;
         mask[xdir+ydir*grid.size] = 1;
         if(grid.get(xdir,ydir)==0) recdirs.push([xdir,ydir]);
     }
