@@ -23,12 +23,9 @@ function nearby(grid,x,y){
     let dir = [n,s,e,w,ne,nw,se,sw];
     let count = [n,s,e,w,ne,nw,se,sw].reduce((total,e,index)=>{
         if(!e && typeof e!='number'){
-            console.log('mine in direction',index);
-            console.log('this mine has value',e);
             return total+1;} 
         return total;
     },0);
-    console.log('returning with count',count)
     return count;
 }
 class Grid{
@@ -37,15 +34,12 @@ class Grid{
         this.elements = new Array(n*n - MINECOUNT).fill(1);
         this.elements = this.elements.concat(new Array(MINECOUNT).fill(null));
         this.elements = randomise(this.elements);
-        console.log('elements after randomisation',this.elements)
         this.elements = this.elements.map((val,_index)=>{
             if(!val && typeof val!='number') return val;
             let x= _index % n;
             let y = parseInt(Math.floor(_index / n));
-            console.log('calling nearby with',x,y); 
             return nearby(this,x,y);
         });
-        console.log('elements after running nearby',this.elements);
     }
     get(x,y){
         let ind = x+y*this.size;
@@ -62,28 +56,25 @@ function createMask(n){
     return mask;
 }
 class Level{
-    constructor(grid,mask,status,score){
+    constructor(grid,mask,status){
         this.grid = grid;
         this.mask = mask;
         this.status = status;
-        this.score = score;
     }
     unmask(x,y){
         if(this.status=="lost") return this;
          let index = x+y*this.grid.size;
          let mask = this.mask.slice();
          let val = this.grid.get(x,y);
-         let score = this.score, status;
+         let status;
          let bombed = false;
          if(!mask[index]){
             mask[index] = 1;
             if(typeof val=='number'){
-                score += val;
                 if(val==1){
                     let b = bomb(this.grid,mask,x,y);
                     bombed = true;
                     mask = b.mask;
-                    score = score + b.count;
                 }
                 else if(val==0){
                     mask = zeroFrenzy(x,y,this.grid,mask);
@@ -92,13 +83,12 @@ class Level{
                 if(bombed && status=='playing') status = 'bombed';
             }
             else{
-                score = this.score;
                 mask = unmine(this.grid,mask);
                 status = "lost";
             }
             
          }
-         return new Level(this.grid,mask,status,score);
+         return new Level(this.grid,mask,status);
     }
     static start(grid){
         let mask = createMask(grid.size);
@@ -139,12 +129,17 @@ function bomb(grid,mask,x,y){
     return {mask:newmask,count};
 }
 function zeroFrenzy(x,y,grid,mask){
+    console.log(`zero frenzy at ${x},${y} with the element ${grid.get(x,y)}`);
     if(x<0 || y <0 || x >= grid.size || y>=grid.size || grid.get(x,y)!==0) return mask;
+    console.log('proceeding');
     let dirs = [[x,y+1],[x,y-1],[x+1,y],[x-1,y],[x-1,y-1],[x-1,y+1],[x+1,y-1],[x+1,y+1]];
     let recdirs = [];
     for(let dir of dirs){
         let [xdir,ydir] = [dir[0],dir[1]];
-        if(mask[xdir+ydir*grid.size]==1 || xdir<0 || ydir<0 || typeof grid.get(xdir,ydir)!=='number') continue;
+        console.log('in direction ',dir, 'mask is ',mask[xdir+ydir*grid.size]);
+        console.log('element is a ',grid.get(xdir,ydir));
+        if(mask[xdir+ydir*grid.size]==1 || xdir<0 || ydir<0 || xdir>=grid.size || ydir>=grid.size|| typeof grid.get(xdir,ydir)!='number') continue;
+        console.log('revealing element');
         mask[xdir+ydir*grid.size] = 1;
         if(grid.get(xdir,ydir)==0) recdirs.push([xdir,ydir]);
     }
@@ -174,11 +169,6 @@ function unveil(x,y,level,docNode){
         while(docNode.firstChild){
             docNode.removeChild(docNode.firstChild);
         }
-        if(localStorage.getItem('highscore')){
-            let highscore = localStorage.getItem('highscore');
-            if(highscore<newLevel.score) localStorage.setItem('highscore',newLevel.score);
-        }
-        else localStorage.setItem('highscore',newLevel.score);
         drawLevel(newLevel,docNode);
         if(newLevel.status!=='lost'){
             let face = docNode.querySelector('.face');
@@ -199,21 +189,13 @@ let classNames = {
 function drawLevel(level,docNode){
     if(level.status=='won'){
         alert('you won !!!');
-        return;
     }
     let mask = level.mask;
     let grid = level.grid;
     let game = elt('div',{class:'game'});
     let face = elt('div',{class:'face'},elt('text',faces[level.status]||faces['playing']));
-    let highscore = elt('div',{class:'highscore'},elt('text','Highscore : '+ (localStorage.getItem('highscore') || level.score)));
-    let score = elt('div',{class:'score-div'},
-       elt('text','Score : '),
-       elt('span',{class:'score'},
-         elt('text',level.score),
-         elt('text',' - '),
-         elt('span',{class:'total-score'},elt('text',grid.total))));
     let reset = elt('input',{class:'reset',value:'New Game',type:'button'});
-    let controls = elt('div',{class:'controls'},face,highscore,score,reset);
+    let controls = elt('div',{class:'controls'},face,reset);
     reset.addEventListener('click',()=>newgame(docNode));
     docNode.appendChild(elt('div',{class:'game-container'},controls,game));
     let boxsize = 100/grid.size;
@@ -250,4 +232,4 @@ function elt(name,attrs,...elements){
     }
     return main;
 }
-newgame(document.body);
+newgame(document.querySelector('.gamemount'));
