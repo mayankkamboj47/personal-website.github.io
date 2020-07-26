@@ -1,21 +1,56 @@
+const MINECOUNT = 10;
+function randomise(array){
+    array = array.slice();
+    let l = array.length;
+    for(let i=0;i<l;i++){
+        let r = i + Math.floor(Math.random()*(l-i));
+        let temp = array[r];
+        array[r]=array[i]
+        array[i] = temp;
+    }
+    return array;
+}
+function nearby(grid,x,y){
+    console.log('searching grid at element',grid.get(x,y))
+    let n = grid.get(x,y+1);
+    let s = grid.get(x,y-1);
+    let e = grid.get(x+1,y);
+    let w = grid.get(x-1,y);
+    let ne = grid.get(x+1,y+1);
+    let nw = grid.get(x-1,y+1);
+    let se = grid.get(x+1,y-1);
+    let sw = grid.get(x-1,y-1);
+    let dir = [n,s,e,w,ne,nw,se,sw];
+    let count = [n,s,e,w,ne,nw,se,sw].reduce((total,e,index)=>{
+        if(!e && typeof e!='number'){
+            console.log('mine in direction',index);
+            console.log('this mine has value',e);
+            return total+1;} 
+        return total;
+    },0);
+    console.log('returning with count',count)
+    return count;
+}
 class Grid{
     constructor(n){
-        this.elements = [];
-        this.total = 0;
-        for(let i=0;i<n*n;i++){
-            let rand = Math.random();
-            if(rand<0.1) this.elements.push(null);
-            else if(rand<0.6) this.elements.push(1);
-            else if(rand<0.8) this.elements.push(2);
-            else if(rand<0.9) this.elements.push(4);
-            else this.elements.push(5);
-            this.total += (this.elements[i]?this.elements[i]:0);
-        }
         this.size = n;
+        this.elements = new Array(n*n - MINECOUNT).fill(1);
+        this.elements = this.elements.concat(new Array(MINECOUNT).fill(null));
+        this.elements = randomise(this.elements);
+        console.log('elements after randomisation',this.elements)
+        this.elements = this.elements.map((val,_index)=>{
+            if(!val && typeof val!='number') return val;
+            let x= _index % n;
+            let y = parseInt(Math.floor(_index / n));
+            console.log('calling nearby with',x,y); 
+            return nearby(this,x,y);
+        });
+        console.log('elements after running nearby',this.elements);
     }
     get(x,y){
-        if(this.elements.length > x+y*this.size)
-            return this.elements[x+y*this.size];
+        let ind = x+y*this.size;
+        if(x>=0 && y>=0 && x<this.size && y < this.size)
+            return this.elements[ind];
         return 0;
     }
 }
@@ -42,13 +77,16 @@ class Level{
          let bombed = false;
          if(!mask[index]){
             mask[index] = 1;
-            if(val){
+            if(typeof val=='number'){
                 score += val;
                 if(val==1){
                     let b = bomb(this.grid,mask,x,y);
                     bombed = true;
                     mask = b.mask;
                     score = score + b.count;
+                }
+                else if(val==0){
+                    mask = zeroFrenzy(x,y,this.grid,mask);
                 }
                 status = this.won(this.grid,mask)?"won":"playing"; /**add code for checking winning here */
                 if(bombed && status=='playing') status = 'bombed';
@@ -69,7 +107,7 @@ class Level{
     won(grid,mask){
         for(let x=0;x<grid.size;x++){
             for(let y=0;y<grid.size;y++){
-                if(mask[x+y*grid.size]==0 && grid.get(x,y)) return false;
+                if(mask[x+y*grid.size]==0 && typeof grid.get(x,y)=='number') return false;
             }
         }
         return true;
@@ -99,6 +137,21 @@ function bomb(grid,mask,x,y){
         count++;
     }
     return {mask:newmask,count};
+}
+function zeroFrenzy(x,y,grid,mask){
+    if(x<0 || y <0 || x >= grid.size || y>=grid.size || grid.get(x,y)!==0) return mask;
+    let dirs = [[x,y+1],[x,y-1],[x+1,y],[x-1,y],[x-1,y-1],[x-1,y+1],[x+1,y-1],[x+1,y+1]];
+    let recdirs = [];
+    for(let dir of dirs){
+        let [xdir,ydir] = [dir[0],dir[1]];
+        if(mask[xdir+ydir*grid.size]==1 || xdir<0 || ydir<0) continue;
+        mask[xdir+ydir*grid.size] = 1;
+        if(grid.get(xdir,ydir)==0) recdirs.push([xdir,ydir]);
+    }
+    for(let dir of recdirs){
+        mask = zeroFrenzy(dir[0],dir[1],grid,mask);
+    }
+    return mask;
 }
 function unmine(grid,mask){
     let newmask = mask.slice();
@@ -144,6 +197,10 @@ let classNames = {
     null:'mine'
 };
 function drawLevel(level,docNode){
+    if(level.status=='won'){
+        alert('you won !!!');
+        return;
+    }
     let mask = level.mask;
     let grid = level.grid;
     let game = elt('div',{class:'game'});
@@ -162,15 +219,16 @@ function drawLevel(level,docNode){
     let boxsize = 100/grid.size;
     for(let y=0;y<grid.size;y++){
         for(let x=0;x<grid.size;x++){
-            let box = elt('div',{class:'box'});
+            let box = elt('div',{class:'box '+`${x}-${y}`});
             box.style.height = boxsize+'vmin';
             box.style.width = boxsize+'vmin';
             box.addEventListener('click',unveil(x,y,level,docNode));
             if(mask[x+y*grid.size]){
-                let text = elt('text',grid.get(x,y)?grid.get(x,y):"*");
+                let text = elt('text',typeof grid.get(x,y)=='number'?grid.get(x,y):"*");
                 box.appendChild(text);
                 box.classList.add('visible');
                 if(classNames[grid.get(x,y)]) box.classList.add(classNames[grid.get(x,y)]);
+                else console.log(grid.get(x,y));
             }
             game.appendChild(box);
         }
