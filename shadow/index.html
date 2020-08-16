@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang='en'>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="utf-8" />
+        <title></title>
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap');
+            *,*::before,*::after{
+                box-sizing: border-box;
+            }
+            body{
+                margin:0;
+                padding:1rem;
+                min-height: 100vh;
+                background:url(fox.jpg), linear-gradient(-90deg, #f5fcf4 50%, hsl(30 90% 70% / 1));
+                background-position:center right;
+                background-repeat: no-repeat;
+            }
+            h1.title{
+                font-family: 'Dancing Script', cursive;
+            }
+            .calculator__title{
+                font-family:'Dancing Script',cursive;
+            }
+            .calculator__input{
+                border:none;
+                border-radius: 10px;
+                box-shadow:0px 3px 0.1px rgba(0,0,0,0.5);
+                font-size:1rem;
+                line-height:1;
+                padding:0.5rem 1rem;
+            }
+            .calculator__input:focus{
+                outline:none;
+            }
+            button{
+                padding:0.5rem 1rem;
+                border-radius:10px;
+                background:transparent;
+                border:1px solid white;
+                color:white;
+                transition:all 0.1s ease-in;
+            }
+            .calculator{
+                padding:1em;
+            }
+            .calculator button:hover{
+                background-color:teal;
+                border-color:teal;
+                box-shadow:0px 5px 0px 0px hsl(180 100% 15% / 1);
+            }
+            .calculator button:focus{
+                outline:none;
+            }
+            .calculator button:active{
+                transform:translateY(5px);
+                box-shadow:none;
+                outline:none;
+            }
+        </style>
+    </head>
+    <body>
+        <h1 class='title'>Shadow's personal page</h1>
+        <div class='calculator'>
+            <h3 class='calculator__title'>Calorie calculator</h3>
+            <input class='calculator__input pounds' type='number' placeholder="weight in pounds" />
+            <button class='calculator__submit'>Find calories</button>
+            <div class='calculator__display'></div>
+        </div>
+        <script>
+            (function(){
+                let submit = document.querySelector('.calculator__submit');
+                submit.addEventListener('click',function(){
+                    let display = document.querySelector('.calculator__display');
+                    let value = parseInt(document.querySelector('.pounds').value);
+                    drawondisplay(display,cals(value));
+                });
+                function cals(weight){
+                    return -12.72*weight + 3227;
+                }
+                function drawondisplay(display,value){
+                    while(display.firstChild) display.removeChild(display.firstChild);
+                    let cals = document.createElement('p');
+                    cals.appendChild(document.createTextNode(`You need ${value} calories today. 💜`));
+                    display.appendChild(cals);
+                }
+            })();
+        </script>
+    </body>
+</html>
