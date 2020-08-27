@@ -1,0 +1,15 @@
+.in-view{
+    margin-top:150vh;
+    margin-bottom:150vh;
+}
+.animate{
+    animation:animate 0.5s ease-in backwards;
+}
+@keyframes animate{
+    0%{
+        opacity:0;
+    }
+    100%{
+        opacity: 1;
+    }
+}
