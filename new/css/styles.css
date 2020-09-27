@@ -1,0 +1,58 @@
+*,*::before,*::after{
+    box-sizing:border-box;
+}
+:root{
+    font-size:16px;
+    font-family: 'Rubik', sans-serif;
+}
+body{
+    margin:0;
+    padding:0;
+}
+.intro,.list{
+    padding:0 10%;
+}
+.intro{
+    min-height:37.5rem;
+    overflow:auto; /** clearfix*/
+}
+.introline{
+    margin-top:12.5rem;
+}
+.logo{
+    height:2rem;
+    width:2rem;
+    margin-top:6.25rem;
+    background-color:black;
+    background-image:url('../images/mayank.png');
+    background-repeat:no-repeat;
+    background-position:center center;
+    background-size:1rem;
+}
+.experience{
+    display:flex;
+    flex-wrap:wrap;
+    gap:2rem;
+    padding-bottom:3rem;
+}
+.list{
+    flex-basis:calc(50% - 1rem);
+}
+.list > h3{
+    text-transform: uppercase;
+    letter-spacing: 0.2rem;
+    font-size:0.8rem;
+    color: #a2a2a2;;
+}
+.item{
+    display:block;
+    color:black;
+    line-height:1.8;
+}
+.project_image{
+    max-width:100%;
+}
+.project_caption{
+    padding:1rem;
+    text-align: center;
+}
