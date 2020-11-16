@@ -121,3 +121,4 @@
         while(node.lastChild){node.removeChild(node.lastChild)}
         node.appendChild(machine)
     }
+    createTest(0,0,2,-1,0,-1,5,-1,4,-1);
