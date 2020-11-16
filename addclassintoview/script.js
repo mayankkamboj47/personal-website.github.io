@@ -6,9 +6,6 @@ window.addEventListener('scroll',function(e){
         console.log(aniClass[1]);
         el.classList.add(aniClass[1]);
     }
-    else if(aniClass){
-        el.classList.remove(aniClass[1]);
-    }
     function inView(div,threshold=0){
         let rect = div.getBoundingClientRect();
         return (rect.bottom>threshold*rect.height && rect.bottom<window.innerHeight) ||
