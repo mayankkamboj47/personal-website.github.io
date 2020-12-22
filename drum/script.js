@@ -54,13 +54,14 @@ let keys = {
                     let v;
                     if (v=this.matrix.get(this.position, index)) {
                         if(v==1){
-                            file.load();
+                            file.currentTime = 0;
                             file.play(); 
                         }
                     }
                     else{
                         //see if you can check whether a file is actually playing before loading it
-                        file.load();
+                        file.currentTime = 0;
+                        file.pause();
                     }
                 }
                 this.position = (this.position + 1) % this.matrix.columns;
