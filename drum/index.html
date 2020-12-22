@@ -11,28 +11,38 @@
                 max-width: 100%;
                 overflow: hidden;
             }
-            .buttons{
-                display: flex;
-                flex-wrap:wrap;
+            .gridboxes{
+                display:flex;
+                flex-direction: column;
             }
-            .btn{
+            .boxrow{
+                display:flex;
+                flex-direction:row;
+            }
+            .box{
+                width:var(--scale);
+                height:var(--scale);
                 background-color: whitesmoke;
                 border:1px solid transparent;
                 background-clip:content-box;
             }
-            .btn.active{
+            .box.active{
                 background-color: black;
             }
-            .btn.playing{
+            .box.sustain{
+                background-color:skyblue;
+            }
+            .box.playing{
                 background-color: pink;
             }
-            .btn.active.playing{
+            .box.active.playing{
                 background-color:violet;
             }
             .pauseplay{
                 width:100px;
                 height:100px;
-                position:relative;
+                position:fixed;
+                bottom:0;
                 margin-left:auto;
             }
             .pauseplay::after{
@@ -62,8 +72,11 @@
                 border:25px solid transparent;
                 border-left-color:black;
           }
-            .music-machine{
+            .machine{
                 display:flex;
+            }
+            .machinemount{
+                overflow:auto;
             }
             .key{
                 display:flex;
@@ -73,6 +86,8 @@
                 font-family: sans-serif;
                 font-weight:bolder;
                 color:white;
+                height:var(--scale);
+                width:var(--scale);
             }
         </style>
     </head>
