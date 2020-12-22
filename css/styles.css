@@ -1,16 +1,149 @@
-body{
-    min-height:100vh;
-    background-color:#aaa;
+*, *::before, *::after {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
 }
-.footer{
-    background:#333;
-    color:white;
+
+:root {
+  font-size: 16px;
+  font-family: 'Rubik', sans-serif;
+  scroll-behavior: smooth;
 }
-.push-down{
-    margin-top:20px;
+
+body {
+  margin: 0;
+  padding: 0;
 }
-.card{
-    background:rgb(64,64,64);
-    color:#eee;
-    border:initial;
+
+.intro, .list {
+  padding: 0 10%;
 }
+
+.intro {
+  min-height: 37.5rem;
+  overflow: auto;
+  /** clearfix*/
+}
+
+.introline {
+  margin-top: 12.5rem;
+}
+
+.logo {
+  height: 2rem;
+  width: 2rem;
+  margin-top: 6.25rem;
+  background-color: black;
+  background-image: url("../images/mayank.png");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 1rem;
+}
+
+.experience {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  gap: 2rem;
+  padding-bottom: 3rem;
+}
+
+@media (max-width: 500px) {
+  .experience {
+    gap: 0rem;
+  }
+}
+
+.list {
+  -ms-flex-preferred-size: calc(50% - 1rem);
+      flex-basis: calc(50% - 1rem);
+}
+
+.list > h3 {
+  text-transform: uppercase;
+  letter-spacing: 0.2rem;
+  font-size: 0.8rem;
+  color: #a2a2a2;
+}
+
+.item {
+  display: block;
+  color: black;
+  line-height: 1.8;
+}
+
+.project__image {
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.project__caption {
+  padding: 1rem;
+  text-align: center;
+}
+
+.imageback__minesweeper {
+  width: 80vw;
+  height: 37.8vw;
+  max-width: 100%;
+  margin: 0 auto;
+  background-image: url("../images/minesweeper.png");
+  background-size: 401% 100%;
+  background-repeat: no-repeat;
+  -webkit-animation: background-loop 4s steps(1, end) infinite;
+          animation: background-loop 4s steps(1, end) infinite;
+}
+
+.project__minesweeper {
+  padding: 0 10vw;
+}
+
+.imageback__simon {
+  width: 80vw;
+  height: 37.8vw;
+  margin: 0 auto;
+  background-image: url("../images/simon.PNG");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+}
+
+.contact {
+  min-height: 100vh;
+  padding: 10rem 10%;
+  text-align: center;
+  background-image: url("../images/contact.jpg");
+  background-size: cover;
+}
+
+@-webkit-keyframes background-loop {
+  0% {
+    background-position: 0%;
+  }
+  25% {
+    background-position: 33.3%;
+  }
+  50% {
+    background-position: 66.6%;
+  }
+  75% {
+    background-position: 99.9%;
+  }
+}
+
+@keyframes background-loop {
+  0% {
+    background-position: 0%;
+  }
+  25% {
+    background-position: 33.3%;
+  }
+  50% {
+    background-position: 66.6%;
+  }
+  75% {
+    background-position: 99.9%;
+  }
+}
+/*# sourceMappingURL=styles.css.map */
