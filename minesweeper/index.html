@@ -11,6 +11,11 @@
         body {
             margin: 0;
             padding: 0;
+            --c1 : #805D05;
+            --c2 : #FFCF57;
+            --c3 : #FFBA0A;
+            --c4 : #80682B;
+            --c5 : #CC9508;
         }
 
         .game {
@@ -18,7 +23,6 @@
             flex-wrap: wrap;
             width: 100vmin;
             height: 100vmin;
-            box-shadow: 0px 3px 5px gray;
             transform: all linear 0.2s;
             font-weight: bolder;
         }
@@ -29,28 +33,30 @@
             align-items: center;
             border-left: 1px solid black;
             border-bottom: 1px solid black;
-            background: radial-gradient(#8c8c8c, #4c4c4c);
+            background-color:var(--c5);
         }
 
         .box.visible {
-            background: #ddd;
-            box-shadow: 0px 0px 10px inset gray;
+            background: var(--c2);
         }
-
+        .zero{
+            color:var(--c1);
+        }
         .one {
-            color: hotpink
+            color: var(--c4);
         }
 
         .two {
-            color: rebeccapurple
+            color: rgb(55, 46, 151);
         }
 
         .three {
-            color: rebeccapurple
+            color: #a30e77;
         }
 
         .four {
-            color: sandybrown
+            background-color: #f6c9c9 !important;
+            color: #8f1f1f;
         }
 
         .five {
@@ -58,7 +64,7 @@
         }
 
         .box.mine {
-            background: red;
+            background: #ea3232;
             color: white;
             font-weight: bold;
         }
@@ -157,7 +163,6 @@
 
 <body>
     <div class='gamemount'>
-
     </div>
     <div class='blurpage'>
         <div class='blurpage__element'>

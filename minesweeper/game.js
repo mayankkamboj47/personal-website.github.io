@@ -1,4 +1,4 @@
-const MINECOUNT = 10;
+
 function randomise(array){
     array = array.slice();
     let l = array.length;
@@ -10,7 +10,7 @@ function randomise(array){
     }
     return array;
 }
-function nearby(grid,x,y){
+function minesnearby(grid,x,y){
     console.log('searching grid at element',grid.get(x,y))
     let n = grid.get(x,y+1);
     let s = grid.get(x,y-1);
@@ -29,16 +29,16 @@ function nearby(grid,x,y){
     return count;
 }
 class Grid{
-    constructor(n){
+    constructor(n,minecount){
         this.size = n;
-        this.elements = new Array(n*n - MINECOUNT).fill(1);
-        this.elements = this.elements.concat(new Array(MINECOUNT).fill(null));
+        this.elements = new Array(n*n - minecount).fill(1);
+        this.elements = this.elements.concat(new Array(minecount).fill(null));
         this.elements = randomise(this.elements);
         this.elements = this.elements.map((val,_index)=>{
             if(!val && typeof val!='number') return val;
             let x= _index % n;
             let y = parseInt(Math.floor(_index / n));
-            return nearby(this,x,y);
+            return minesnearby(this,x,y);
         });
     }
     get(x,y){
@@ -180,8 +180,10 @@ function unveil(x,y,level,docNode){
     };
 }
 let classNames = {
+    0 : 'zero',
     1:'one',
     2:'two',
+    3 : 'three',
     4:'four',
     5:'five',
     null:'mine'
@@ -218,7 +220,7 @@ function drawLevel(level,docNode){
 }
 function newgame(docNode){
     while(docNode.firstChild) docNode.removeChild(docNode.firstChild);
-    let level = Level.start(new Grid(10));
+    let level = Level.start(new Grid(10,10));
     drawLevel(level,docNode);
 }
 function elt(name,attrs,...elements){
