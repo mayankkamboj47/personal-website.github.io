@@ -70,6 +70,18 @@ nav{
 .nav-items > li{
     display:inline-block;
 }
+@media(max-width:600px){
+    .logo{
+        display:block;
+    }
+    .nav-items{
+        display:flex;
+        float:none;
+    }
+    .nav-items > li{
+        flex:1;
+    }
+}
 .nav-items a{
     display:inline-block;
     padding:0.5rem 1rem;
@@ -77,9 +89,18 @@ nav{
     text-decoration:none;
     margin-right:2rem;
 }
+
 .nav-items li:last-child a{
     margin-right:0;
     padding-right:0;
+}
+@media(max-width:600px){
+    .nav-items a{
+        margin:0;
+    }
+    .nav-items a:first-of-type{
+        padding-left:0;
+    }
 }
 .nav-items a.active{
     font-weight: bold;
@@ -109,6 +130,13 @@ nav{
     width:calc(33.33% - 1rem);
     margin-right:1rem;
     float:left;
+}
+@media(max-width:600px){
+    .services p{
+        width:auto;
+        margin-right:0;
+
+    }
 }
 .services p .icon{
     display:block;
@@ -146,6 +174,13 @@ footer{
   margin-top:2rem;
   min-height:10rem;
   padding-top:2rem;
+}
+@media(max-width:40rem){
+    footer{
+        background-color:black;
+        margin-left:-3rem;
+        margin-right:-3rem;
+    }
 }
 footer > *{ /* footer columns */
   flex:1;
